@@ -1,0 +1,31 @@
+{
+  "namespace": "Blazor.Extensions.MergetStyles",
+  "src": "https://raw.githubusercontent.com/OfficeDev/office-ui-fabric-react/master/packages/merge-styles/src/",
+  "files": [
+    {
+      "features": "complete",
+      "src": "IRawStyleBase.ts",
+      "className": "StyleBase.cs",
+      "CsharpVersion": 6
+    },
+
+    {
+      "src": "IStyle.ts",
+      "features": "just-types"
+    },
+    {
+      "src": "IStyleFunction.ts",
+      "features": "just-types"
+    },
+    {
+      "src": "IStyleSet.ts",
+      "features": "just-types"
+    }
+  ],
+  "rules": [
+    {
+      "value": "",
+      "pattern": "(import|export)\\s*((\\{[^}]*\\}|\\*)(\\s*as\\s+\\w+)?(\\s+from)?\\s*)?([`'\"])(.*)\\6;"
+    }
+  ]
+}

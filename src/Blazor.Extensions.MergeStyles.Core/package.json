@@ -1,0 +1,22 @@
+{
+  "name": "blazor.extensions.mergestyles.core",
+  "version": "1.0.0",
+  "description": "Contains and management the base class from merge-style typescript impmenentation ",
+  "main": "\"\"",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Blazor",
+    "merge-style",
+    "C#",
+    "Ofice",
+    "UI",
+    "Fabric"
+  ],
+  "author": "Daniel Meza",
+  "license": "ISC",
+  "devDependencies": {
+    "quicktype": "^15.0.69"
+  }
+}
