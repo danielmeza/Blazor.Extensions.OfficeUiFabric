@@ -15,9 +15,9 @@ namespace Blazor.Extensions.MergeStyles.Tests.Transformations
     {
 
         [TestInitialize]
-        public  async Task Initialize()
+        public async Task TestInit()
         {
-            await base.Init();
+            base.Init();
             await TransformationsRules.SetRTL(true);
         }
 
@@ -31,7 +31,7 @@ namespace Blazor.Extensions.MergeStyles.Tests.Transformations
         [Description("Can auto flip or avoid autoflipping with noflip")]
         public async Task CanAutoFlipAutoflippingWithNoflip()
         {
-            var properties = JsonConvert.DeserializeObject<ICollection<CssValue[][]>>(await File.ReadAllTextAsync(@"Transformations/rtlfyrulesdata.json"));
+            var properties = JsonConvert.DeserializeObject<ICollection<CssValue[][]>>(await File.ReadAllTextAsync(@"Transformations/rtlfyrulesdata.json"), Converter.Settings);
             foreach (var test in properties)
             {
                 var rules = test[0];

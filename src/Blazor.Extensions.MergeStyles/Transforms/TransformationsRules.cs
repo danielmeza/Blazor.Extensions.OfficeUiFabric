@@ -60,7 +60,7 @@ namespace Blazor.Extensions.MergeStyles.Transforms
 
         }
 
-        public static async Task PrefixRule(ICollection<CssValue> rules, int index)
+        public static async Task PrefixRules(ICollection<CssValue> rules, int index)
         {
             var vendorSettings = await VendorSettings.GetCurrentAsync();
 
@@ -196,7 +196,7 @@ namespace Blazor.Extensions.MergeStyles.Transforms
 
         private static string negateNum(string value, int partIndex)
         {
-            var parts = value.Split(" ");
+            var parts = value.Split(' ');
             var numberVal = parts[partIndex].ParseInt();
 
             parts[0] = parts[0].Replace(numberVal.ToString(), (numberVal * -1).ToString());
@@ -214,7 +214,7 @@ namespace Blazor.Extensions.MergeStyles.Transforms
         {
             if (!value.IsNumber)
             {
-                var parts = value.ToString().Split(" ");
+                var parts = value.ToString().Split(' ');
 
                 if (parts.Length == 4)
                 {

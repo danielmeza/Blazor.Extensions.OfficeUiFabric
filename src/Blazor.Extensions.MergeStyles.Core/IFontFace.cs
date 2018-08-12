@@ -71,7 +71,7 @@ namespace Blazor.Extensions.MergeStyles
         /// https://www.w3.org/TR/css-fonts-3/#propdef-font-size-adjust
         /// </summary>
         [JsonProperty("fontSizeAdjust", NullValueHandling = NullValueHandling.Ignore)]
-        public FontSizeAdjustUnion? FontSizeAdjust { get; set; }
+        public FontSizeAdjust? FontSizeAdjust { get; set; }
 
         /// <summary>
         /// Allows you to expand or condense the widths for a normal, condensed, or expanded
@@ -118,7 +118,7 @@ namespace Blazor.Extensions.MergeStyles
         /// See CSS 3 'font-weight' property https://www.w3.org/TR/css-fonts-3/#propdef-font-weight
         /// </summary>
         [JsonProperty("fontWeight", NullValueHandling = NullValueHandling.Ignore)]
-        public IFontWeightUnion? FontWeight { get; set; }
+        public FontWeight? FontWeight { get; set; }
 
         /// <summary>
         /// Specifies the src of the font.

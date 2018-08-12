@@ -28,7 +28,7 @@ namespace Blazor.Extensions.MergeStyles.Tests.Transformations
                 var rules = new List<CssValue> { rule, "none" };
 
                 VendorSettings.SetCurrent(new VendorSettings { IsWebKit = true });
-                await TransformationsRules.PrefixRule(rules, 0);
+                await TransformationsRules.PrefixRules(rules, 0);
 
                 CollectionAssert.That.AreEqualRules(rules, rule, "none", "-webkit-" + rule, "none");
 
@@ -43,7 +43,7 @@ namespace Blazor.Extensions.MergeStyles.Tests.Transformations
             {
                 var rules = new List<CssValue> { rule, "none" };
                 VendorSettings.SetCurrent(new VendorSettings { IsMoz = true });
-                await TransformationsRules.PrefixRule(rules, 0);
+                await TransformationsRules.PrefixRules(rules, 0);
 
                 CollectionAssert.That.AreEqualRules(rules, rule, "none", "-moz-" + rule, "none");
             }
@@ -57,7 +57,7 @@ namespace Blazor.Extensions.MergeStyles.Tests.Transformations
             {
                 var rules = new List<CssValue> { rule, "none" };
                 VendorSettings.SetCurrent(new VendorSettings { IsMs = true });
-                await TransformationsRules.PrefixRule(rules, 0);
+                await TransformationsRules.PrefixRules(rules, 0);
 
                 CollectionAssert.That.AreEqualRules(rules, rule, "none", "-ms-" + rule, "none");
             }
@@ -71,7 +71,7 @@ namespace Blazor.Extensions.MergeStyles.Tests.Transformations
             {
                 var rules = new List<CssValue> { rule, "none" };
                 VendorSettings.SetCurrent(new VendorSettings { IsOpera = true });
-                await TransformationsRules.PrefixRule(rules, 0);
+                await TransformationsRules.PrefixRules(rules, 0);
 
                 CollectionAssert.That.AreEqualRules(rules, rule, "none", "-o-" + rule, "none");
             }

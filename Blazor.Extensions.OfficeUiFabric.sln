@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Extensions.MergeStyl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{F7BF27DE-7579-43DC-AB6A-DB4F8CBD117A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor.Extensions.MergeStyles.Tests", "tests\Blazor.Extensions.MergeStyles.Tests\Blazor.Extensions.MergeStyles.Tests.csproj", "{C27A676A-7E62-40D8-A9C5-D0398F61FFEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blazor.Extensions.MergeStyles.Tests", "tests\Blazor.Extensions.MergeStyles.Tests\Blazor.Extensions.MergeStyles.Tests.csproj", "{C27A676A-7E62-40D8-A9C5-D0398F61FFEB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E40DCAC7-AF92-4467-A029-33C7E5DC8D53}"
 EndProject

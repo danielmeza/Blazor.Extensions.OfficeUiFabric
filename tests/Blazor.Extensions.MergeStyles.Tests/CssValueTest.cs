@@ -10,12 +10,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
     [TestClass]
     public class CssValueTest
     {
-        [TestMethod]
-        public void CanCastToBool()
-        {
-            object bolean = true;
-            CssValue value = (CssValue)bolean;
-        }
+     
         
     }
 }

@@ -16,7 +16,7 @@ namespace Blazor.Extensions.MergeStyles
     using Newtonsoft.Json.Converters;
 
 
-    public class Style : RawStyle
+    public class Style : RawStyle, IEnumerable<Style>
     {
         public Style()
         {
@@ -29,6 +29,7 @@ namespace Blazor.Extensions.MergeStyles
         }
         public Style[] Array { get; internal set; }
 
+
         public bool IsArray => this.Array != null;
 
         public static implicit operator Style(Style[] values) => new Style() { Array = values };
@@ -39,13 +40,11 @@ namespace Blazor.Extensions.MergeStyles
 
         public static implicit operator Style(int value) => new Style() { Numnber = value };
 
-        public static explicit operator string(Style style) => style.String;
-
-
 
         public static explicit operator int(Style style) => style.Numnber ?? throw new InvalidCastException("The style is not a number value");
         public static explicit operator bool(Style style) => style.Bool ?? throw new InvalidCastException("The style is not a boolean value");
-
+        public static explicit operator string(Style style) => style.IsString ? style.String : throw new InvalidCastException("The style is not a string value");
+        //public static explicit operator Style[] (Style style) => style.Array ?? throw new InvalidCastException("The style is not an array value");
 
 
         public override bool Equals(object obj)
@@ -78,15 +77,69 @@ namespace Blazor.Extensions.MergeStyles
             return this.GetHashCode();
         }
 
+        IEnumerator<Style> IEnumerable<Style>.GetEnumerator()
+        {
+            return this.Enumerator;
+        }
 
+        public StyleEnum Enumerator => new StyleEnum(this.Array);
     }
 
+    public class StyleEnum : IEnumerator<Style>
+    {
+        private int position = -1;
+
+        public StyleEnum(Style[] styles)
+        {
+            this.Styles = styles;
+        }
+
+        public Style[] Styles { get; }
+
+        public Style Current
+        {
+            get
+            {
+                try
+                {
+                    return this.Styles[this.position];
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    throw new InvalidOperationException();
+                }
+            }
+        }
+
+        object IEnumerator.Current => this.Current;
+
+        public void Dispose()
+        {
+
+        }
+
+        public bool MoveNext()
+        {
+            this.position++;
+            return (this.position < this.Styles.Length);
+        }
+
+        public void Reset()
+        {
+            this.position = -1;
+        }
+
+
+    }
     /// <summary>
     /// IStyleObject extends a raw style objects, but allows selectors to be defined
     /// under the selectors node.
     /// </summary>
-    public partial class RawStyle : IRawStyleBase
+    public partial class RawStyle : RawStyleBase
     {
+        private Dictionary<string, Style> _selectors;
+        private string _displayName;
+
         public RawStyle()
         {
 
@@ -96,21 +149,44 @@ namespace Blazor.Extensions.MergeStyles
         public bool IsString => this.String != null;
         public bool IsNumber => this.Numnber.HasValue;
         public bool IsBool => this.Bool.HasValue;
+
+        [NotParse]
         public string String { get; internal set; }
+        [NotParse]
         public bool? Bool { get; internal set; }
+        [NotParse]
         public int? Numnber { get; internal set; }
+
         public bool IsNull => this.Bool is null && this.Numnber is null && this.String is null;
+
         /// <summary>
         /// Display name for the style.
         /// </summary>
         [JsonProperty("displayName", NullValueHandling = NullValueHandling.Ignore)]
-        public string DisplayName { get; set; }
+        public string DisplayName { get => this._displayName; set => SetProperty(ref this._displayName, value); }
 
         /// <summary>
         /// Custom selectors for the style.
         /// </summary>
 
-        public IDictionary<string, Style> Selectors { get; set; } = new Dictionary<string, Style>();
+        public Dictionary<string, Style> Selectors
+        {
+            get
+            {
+                if (this._selectors == null)
+                {
+                    var selector = new Dictionary<string, Style>();
+                    SetProperty(ref this._selectors, selector);
+                }
+                return this._selectors;
+
+            }
+
+            set
+            {
+                SetProperty(ref this._selectors, value);
+            }
+        }
 
 
 
@@ -159,29 +235,29 @@ namespace Blazor.Extensions.MergeStyles
             var @object = (Style)value;
             if (@object.IsNull)
             {
-                serializer.Serialize(writer, null);
+                writer.WriteRawValue(null);
                 return;
             }
             if (@object.Bool != null)
             {
-                serializer.Serialize(writer, @object.Bool.Value);
+                writer.WriteRawValue(@object.Bool.Value.ToString());
                 return;
             }
             if (@object.String != null)
             {
-                serializer.Serialize(writer, @object.String);
+                writer.WriteRawValue(@object.String);
                 return;
             }
 
             if (@object.Numnber != null)
             {
-                serializer.Serialize(writer, @object.Numnber);
+                writer.WriteRawValue(@object.Numnber.ToString());
                 return;
             }
 
             if (value != null)
             {
-                serializer.Serialize(writer, @object);
+                writer.WriteRawValue(@object.ToString());
                 return;
             }
             throw new Exception("Cannot marshal type IStyleBaseUnion");

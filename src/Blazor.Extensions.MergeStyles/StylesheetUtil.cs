@@ -1,5 +1,6 @@
 using Blazor.Extensions.MergeStyles.Extensions;
 using Blazor.Extensions.MergeStyles.Transforms;
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -33,9 +34,11 @@ namespace Blazor.Extensions.MergeStyles
         public static string GetDisplayName(Dictionary<string, object> rules)
         {
             object value = null;
-            if (rules?.TryGetValue("&", out value) == true && value is RawStyle rootStyle)
+            if (rules?.TryGetValue("&", out value) == true && value is IDictionary<string, object> dic)
             {
-                return rootStyle?.DisplayName;
+                object displayName = null;
+                dic.TryGetValue(DISPLAY_NAME, out displayName);
+                return displayName?.ToString();
             }
             return null;
         }
@@ -82,19 +85,15 @@ namespace Blazor.Extensions.MergeStyles
                 }
                 else if (arg != null)
                 {
-                    var type = arg.GetType();
                     // tslint:disable-next-line:no-any
-                    foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance | (BindingFlags.GetProperty & BindingFlags.SetProperty)))
+                    foreach (var prop in arg.Keys)
                     {
 
-                        if (!prop.CanWrite || prop.GetValue(arg) == null)
-                            continue;
 
-                        if (prop.Name == "Selectors")
+
+                        if (prop == "Selectors")
                         {
                             var selectors = arg.Selectors;
-
-
                             foreach (var key in selectors.Keys)
                             {
                                 var newSelector = key;
@@ -104,7 +103,7 @@ namespace Blazor.Extensions.MergeStyles
 
                                     if (newSelector.IndexOf(":global(") == 0)
                                     {
-                                        newSelector = newSelector.Replace(new Regex(@"/:global\(|\)$", RegexOptions.Compiled), "");
+                                        newSelector = newSelector.Replace(new Regex(@":global\(|\)$", RegexOptions.Compiled), "");
                                     }
                                     else if (newSelector.IndexOf("@media") == 0)
                                     {
@@ -126,17 +125,17 @@ namespace Blazor.Extensions.MergeStyles
                         else
                         {
                             // Else, add the rule to the currentSelector.
-                            if (prop.Name == "Margin" || prop.Name == "Padding")
+                            if (prop == "Margin" || prop == "Padding")
                             {
 
                                 // tslint:disable-next-line:no-any
-                                expandQuads(currentRules, prop.Name.ToCamelCase(), prop.GetValue(arg)?.ToString());
+                                expandQuads(currentRules, prop, arg[prop]?.ToString());
                             }
                             else
                             {
                                 // tslint:disable-next-line:no-any
 
-                                currentRules[prop.Name.ToCamelCase()] = prop.GetValue(arg);
+                                currentRules[prop] = arg[prop];
                             }
                         }
                     }
@@ -145,9 +144,10 @@ namespace Blazor.Extensions.MergeStyles
 
             return rules;
         }
+
         private static void expandQuads(Dictionary<string, object> currentRules, string name, string value)
         {
-            var parts = value is string ? value.Split(" ") : new string[] { value };
+            var parts = value is string ? value.Split(' ') : new string[] { value };
 
             var partZero = parts.Length == 0 ? null : parts[0];
 
@@ -182,21 +182,24 @@ namespace Blazor.Extensions.MergeStyles
                 {
                     allEntries.Add(str);
                     var entryValue = ruleEntries[entry];
+
                     CssValue value = new CssValue();
                     switch (entryValue)
                     {
+                        case CssValue css:
+                            value = css;
+                            break;
                         case bool bo:
                             value = bo;
+                            break;
+                        case int @int:
+                            value = @int;
                             break;
                         case string strg:
                             value = strg;
                             break;
-                        case null:
-
-                            break;
-
                         default:
-                            value = Convert.ToDouble(entryValue);
+                            value = JsonConvert.SerializeObject(entryValue, Formatting.None, Converter.Settings);
                             break;
 
                     }
@@ -212,14 +215,14 @@ namespace Blazor.Extensions.MergeStyles
                 TransformationsRules.KebabRules(arrayRules, i);
                 TransformationsRules.ProvideUnits(arrayRules, i);
                 await TransformationsRules.RtlifyRules(arrayRules, i);
-                await TransformationsRules.RtlifyRules(arrayRules, i);
+                await TransformationsRules.PrefixRules(arrayRules, i);
             }
             var rules = arrayRules.ToList();
             // Apply punctuation.
-            for (var i = 1; i < arrayRules.Length; i += 4)
+            for (var i = 1; i < rules.Count; i += 4)
             {
 
-                rules.Splice(i, 1, ":", arrayRules[i], ";");
+                rules.Splice(i, 1, ":", rules[i], ";");
             }
 
             return string.Join("", rules);
@@ -278,7 +281,8 @@ namespace Blazor.Extensions.MergeStyles
                     if (value != null)
                     {
                         hasProps = true;
-                        serialized.Add(prop.ToString().ToCamelCase());
+
+                        serialized.Add(prop.ToString());
                         serialized.Add(value);
                     }
                 }
@@ -305,7 +309,7 @@ namespace Blazor.Extensions.MergeStyles
                         selector = Regex.Replace(selector, @"(&)|\$([\w-]+)\b", (m) =>
                          {
 
-                             if (m.Captures.Any())
+                             if (m.Captures.Count > 0)
                              {
                                  return "." + registration.ClassName;
                              }

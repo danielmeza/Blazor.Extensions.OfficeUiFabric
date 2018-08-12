@@ -12,25 +12,29 @@ namespace Blazor.Extensions.MergeStyles.Tests
     [TestClass]
     public class StylesheetTest : BaseTest
     {
-        private Stylesheet _stylessheet;
+        private static Stylesheet _stylessheet;
 
-        [TestInitialize]
-        public async Task Initialize()
+        [ClassInitialize]
+        public static async Task Initialize(TestContext context)
         {
+            Initialize();
+            _stylessheet = await Stylesheet.GetInstance();
+            _stylessheet.SetConfig(new StyleSheetConfig { InjectionMode = InjectionMode.None, DefaultPrefix = "myCss" });
 
-            await base.Init();
-            this._stylessheet = await Stylesheet.GetInstance();
-            this._stylessheet.SetConfig(new StyleSheetConfig { InjectionMode = InjectionMode.None, DefaultPrefix = "myCss" });
         }
 
         [TestMethod]
-        public void SupportOverridingThedefaultPrefix()
+        [Description("supports overriding the default prefix")]
+        public async Task SupportOverridingThedefaultPrefix()
         {
-            //Arrange
-            //var className = styleToClassName({ background: 'red' });
+            VendorSettings.SetCurrent(new VendorSettings() { IsWebKit = true });
 
-            //expect(className).toEqual('myCss-0');
-            //expect(_stylesheet.getRules()).toEqual('.myCss-0{background:red;}');
+            //Arrange
+            var className = await StylesheetUtil.StyleToClassName(new Style { Background = "red" });
+            Assert.AreEqual(className, "myCss-0");
+            Assert.AreEqual(".myCss-0{background:red;}", _stylessheet.GetRules());
+            VendorSettings.SetCurrent(null);
+
         }
     }
 }

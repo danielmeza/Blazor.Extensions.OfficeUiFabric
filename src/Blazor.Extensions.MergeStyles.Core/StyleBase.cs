@@ -19,7 +19,7 @@ namespace Blazor.Extensions.MergeStyles
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    public enum FontSizeAdjust { Inherit, Initial, None, Unset };
+    public enum FontSizeAdjustValues { Inherit, Initial, None, Unset };
 
     /// <summary>
     /// Allows you to expand or condense the widths for a normal, condensed, or expanded
@@ -38,7 +38,7 @@ namespace Blazor.Extensions.MergeStyles
     /// </summary>
     public enum FontStyle { Inherit, Initial, Italic, Normal, Oblique, Unset };
 
-    public enum FontWeight { Bold, Bolder, Inherit, Initial, Lighter, Normal, The100, The200, The300, The400, The500, The600, The700, The800, The900, Unset };
+    public enum FontWeightValues { Bold, Bolder, Inherit, Initial, Lighter, Normal, The100, The200, The300, The400, The500, The600, The700, The800, The900, Unset };
 
     /// <summary>
     /// Aligns a flex container's lines within the flex container when there is extra space
@@ -90,7 +90,7 @@ namespace Blazor.Extensions.MergeStyles
     /// </summary>
     public enum BoxSizing { BorderBox, ContentBox, Inherit, Initial, Unset };
 
-    public enum ColumnCount { Auto, Inherit, Initial, Unset };
+    public enum ColumnCountValues { Auto, Inherit, Initial, Unset };
 
     public enum CssRule { Inherit, Initial, Unset };
 
@@ -335,36 +335,101 @@ namespace Blazor.Extensions.MergeStyles
     /// See CSS zoom descriptor https://drafts.csswg.org/css-device-adapt/#zoom-desc
     /// </summary>
 
-    public partial struct FontSizeAdjustUnion
+    public partial struct FontSizeAdjust
     {
-        public decimal? Double;
-        public FontSizeAdjust? Enum;
+        public FontSizeAdjust(FontSizeAdjustValues value)
+        {
+            this.Double = null;
+            this.Enum = value;
+        }
+
+        public FontSizeAdjust(double value)
+        {
+            this.Double = value;
+            this.Enum = null;
+        }
+        public double? Double { get; private set; }
+        public FontSizeAdjustValues? Enum { get; private set; }
+
+        public static implicit operator FontSizeAdjust(FontSizeAdjustValues value) => new FontSizeAdjust() { Enum = value };
+        public static implicit operator FontSizeAdjust(double value) => new FontSizeAdjust() { Double = value };
 
         public bool IsNull => this.Double == null && this.Enum == null;
     }
 
-    public partial struct IFontWeightUnion
+    public partial struct FontWeight
     {
-        public decimal? Double;
-        public FontWeight? Enum;
-        public long? Integer;
 
+        public FontWeight(double value)
+        {
+            this.Double = value;
+            this.Integer = null;
+            this.Enum = null;
+        }
+
+        public FontWeight(int value)
+        {
+            this.Double = null;
+            this.Integer = value;
+            this.Enum = null;
+        }
+        public FontWeight(FontWeightValues value)
+        {
+            this.Enum = value;
+            this.Double = null;
+            this.Integer = null;
+        }
+
+        public double? Double { get; internal set; }
+
+        public FontWeightValues? Enum { get; internal set; }
+
+        public long? Integer { get; internal set; }
+
+
+
+        public static implicit operator FontWeight(FontWeightValues value) => new FontWeight() { Enum = value };
+        public static implicit operator FontWeight(double value) => new FontWeight() { Double = value };
+        public static implicit operator FontWeight(int value) => new FontWeight() { Integer = value };
         public bool IsNull => this.Double == null && this.Integer == null && this.Enum == null;
     }
 
-    public partial struct ColumnCountUnion
+    public partial struct ColumnCount
     {
-        public decimal? Double;
-        public ColumnCount? Enum;
+        public ColumnCount(ColumnCountValues column)
+        {
+            this.Enum = column;
+            this.Double = null;
+        }
 
+        public double? Double { get; private set; }
+        public ColumnCountValues? Enum { get; private set; }
+
+        public static implicit operator ColumnCount(ColumnCountValues value) => new ColumnCount() { Enum = value };
+        public static implicit operator ColumnCount(double value) => new ColumnCount() { Double = value };
+
+        public static explicit operator double(ColumnCount value) => value.Double ?? throw new InvalidCastException("The column count ist not and double instance");
+        public static explicit operator ColumnCountValues(ColumnCount value) => value.Enum ?? throw new InvalidCastException("The column count ist not and ColumCountValues instance");
         public bool IsNull => this.Double == null && this.Enum == null;
     }
 
     public partial struct FillOpacity
     {
-        public decimal? Double;
-        public CssRule? Enum;
+        public FillOpacity(double value)
+        {
+            this.Double = value;
+            this.Enum = null;
+        }
+        public FillOpacity(CssRule value)
+        {
+            this.Double = null;
+            this.Enum = value;
+        }
+        public double? Double { get; private set; }
+        public CssRule? Enum { get; private set; }
 
+        public static implicit operator FillOpacity(CssRule value) => new FillOpacity() { Enum = value };
+        public static implicit operator FillOpacity(double value) => new FillOpacity() { Double = value };
         public bool IsNull => this.Double == null && this.Enum == null;
     }
 

@@ -11,14 +11,14 @@ namespace Blazor.Extensions.MergeStyles.Tests
 {
     public class BaseTest
     {
-        public Task Init()
+        public static void Initialize()
         {
             //Initialize a fake IJSRuntime with the necesary functions to work
             var jsRuntimeMock = new Mock<IJSRuntime>();
             jsRuntimeMock.Setup((rt) => rt.InvokeAsync<object>("Init", null)).Returns(Task.FromResult<object>(null));
-            
+
             JSRuntime.SetCurrentJSRuntime(jsRuntimeMock.Object);
-            return Task.CompletedTask;
         }
+        public void Init() => BaseTest.Initialize();
     }
 }

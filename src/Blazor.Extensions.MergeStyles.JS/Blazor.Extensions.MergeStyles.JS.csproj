@@ -12,12 +12,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Blazor.Build" Version="0.5.1" />
     <WebpackInputs Include="**\*.ts" Exclude="dist\**;node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <WebpackInputs Remove="src\Initilize.ts" />
+    <WebpackInputs Remove="src\Initialize.ts" />
     <WebpackInputs Remove="src\Stylesheet.ts" />
     <WebpackInputs Remove="src\transforms\rtlifyRules.ts" />
     <WebpackInputs Remove="src\VendorSettings.ts" />
