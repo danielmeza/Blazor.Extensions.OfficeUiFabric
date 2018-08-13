@@ -20,19 +20,43 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can render content")]
         public void CanRenderContent()
         {
-            //TODO: implementMergeStyleSet first
-        //    var (html, css) = StyleEngine.RenderStatic(() =>
-        //    {
-        //    var classNames = StyleEngine.M mergeStyleSets({
-        //        root:
-        //        {
-        //            background: 'red'
-        //                }
-        //    });
+            (var html, var css) = StyleEngine.RenderStatic(() =>
+            {
+                var classNames = StyleEngine.MergeStyleSets(new StyleSetFake
+                {
+                    Root = new Style
+                    {
+                        Background = "red"
+                    }
+                });
 
-        //    return $"<div class=\"{classNames.root}\">Hello!</div>";
-        //});
+                return $"<div class=\"{classNames.Root}\">Hello!</div>";
+            });
+            Assert.AreEqual("<div class=\"root-0\">Hello!</div>", html);
+            Assert.AreEqual(".root-0{background:red;}", css);
         }
 
-}
+        [TestMethod]
+        [Description("can namespace things")]
+        public void CanNamespaceThings()
+        {
+
+            (var html, var css) = StyleEngine.RenderStatic(() =>
+            {
+                var classNames = StyleEngine.MergeStyleSets(new StyleSetFake
+                {
+                    Root = new Style
+                    {
+                        Background = "red"
+                    }
+                });
+
+                return $"<div class=\"{classNames.Root}\">Hello!</div>";
+            }, "test");
+
+            Assert.AreEqual("<div class=\"test-root-0\">Hello!</div>", html);
+            Assert.AreEqual(".test-root-0{background:red;}", css);
+        }
+
+    }
 }

@@ -46,20 +46,6 @@ namespace Blazor.Extensions.MergeStyles
         public static explicit operator string(Style style) => style.IsString ? style.String : throw new InvalidCastException("The style is not a string value");
 
 
-        public static bool operator ==(Style style1, string style2)
-        {
-            if (style1 is null && style2 is null)
-                return true;
-            return style1?.IsString == true && style1.String == style2;
-        }
-
-        public static bool operator !=(Style style1, string style2)
-        {
-            if (style1 == null && style2 == null)
-                return false;
-            return !(style1?.IsString == true && style1.String == style2);
-        }
-
         public override bool Equals(object obj)
         {
             if (!(obj is Style style))
@@ -95,6 +81,21 @@ namespace Blazor.Extensions.MergeStyles
                 return this.Bool.Value.GetHashCode();
 
             return this.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            if (this.IsArray)
+                return this.Array.Select(i => i.ToString()).Join("");
+            if (this.IsNumber)
+                return this.Numnber.Value.ToString();
+            if (this.IsString)
+                return this.String;
+            if (this.IsBool)
+                return this.Bool.Value.ToString();
+            if (this.Dictionary.Any())
+                return this.Dictionary.Select(s => s.Value).Join("");
+            return base.ToString();
         }
 
         IEnumerator<Style> IEnumerable<Style>.GetEnumerator()

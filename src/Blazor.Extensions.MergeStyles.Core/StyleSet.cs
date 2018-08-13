@@ -26,8 +26,8 @@ namespace Blazor.Extensions.MergeStyles
 
         protected bool SetProperty<TValue>(ref TValue field, TValue value, [CallerMemberName] string propertyName = null)
         {
-            if (string.IsNullOrWhiteSpace(propertyName) || EqualityComparer<TValue>.Default.Equals(field, value))
-                return false;
+            //if (string.IsNullOrWhiteSpace(propertyName) || EqualityComparer<TValue>.Default.Equals(field, value))
+            //    return false;
 
             field = value;
             var key = (propertyName.Kebab(), propertyName);
@@ -39,7 +39,7 @@ namespace Blazor.Extensions.MergeStyles
             //add or update the new value
             else
             {
-                this.Dictionary.AddOrUpdate(key, value);
+                this.Dictionary[key] = value;
             }
             return true;
 
@@ -75,13 +75,12 @@ namespace Blazor.Extensions.MergeStyles
             }
         }
 
-        Dictionary<string, object> IStyleSet<T>.SubComponentStyles { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public override bool Equals(object obj)
         {
             if (!(obj is StyleSet<T> style))
                 return false;
-            if (this.Dictionary.AreEquals(style.Dictionary))
+            if (this.Dictionary.AreEquals(style.Dictionary) && this.SubComponentStyles?.AreEquals(style?.SubComponentStyles) == true)
                 return true;
             return base.Equals(obj);
         }
@@ -95,6 +94,11 @@ namespace Blazor.Extensions.MergeStyles
         {
             var prop = this.GetType().GetProperty(key);
             prop?.SetValue(this, style);
+        }
+
+        public override string ToString()
+        {
+            return this.Dictionary.Select(s => s.Value).Join(" ");
         }
 
 

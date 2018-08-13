@@ -166,7 +166,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can expand child selectors")]
         public void CanExpandChildSelector()
         {
-      
+
             var result = StyleEngine.MergeStyleSets(new StyleSetFake
             {
                 A = new Style
@@ -234,6 +234,77 @@ namespace Blazor.Extensions.MergeStyles.Tests
                 Child = "d child-1"
             }, result);
             Assert.AreEqual(".root-0:hover .child-1{background:red;}" + ".child-1{background:green;}", _stylesheet.GetRules());
+        }
+
+        [TestMethod]
+        [Description("can merge class names")]
+        public void CanMergeClassNames()
+        {
+            var result = StyleEngine.MergeStyleSets(new StyleSetFake
+            {
+                Root = new Style[] { "a", "b", new Style { Background = "red" } }
+            });
+
+            Assert.AreEqual(new StyleSetFake { Root = "a b root-0" }, result);
+        }
+
+        [TestMethod]
+        [Description("can normalize duplicate static class names")]
+        public void CanNormalizeDuplicateStaticClassName()
+        {
+            var styles = StyleEngine
+                .MergeStyleSets(new StyleSetFake { Root = new Style[] { "a", new Style { Background = "red" } } });
+
+            var styles1 = StyleEngine.MergeStyleSets(styles, styles);
+
+            Assert.AreEqual(new StyleSetFake { Root = "a root-0" }, styles1);
+        }
+
+
+        [TestMethod]
+        [Description("can auto expand a previously registered style embedded in static classname")]
+        public void CanAutoExpandPreviouslyRegisteredStyleEmbeddedInStaticClassname()
+        {
+            var styles = StyleEngine
+             .MergeStyleSets(new StyleSetFake { Root = new Style[] { "a", new Style { Background = "red" } } });
+
+            var styles2 = StyleEngine
+              .MergeStyleSets(new StyleSetFake { Root = new Style[] { "b", new Style { Background = "purple" } } }, styles);
+
+            var styles3 = StyleEngine
+            .MergeStyleSets(styles, new StyleSetFake { Root = new Style[] { "b", new Style { Background = "purple" } } });
+
+            var styles4 = StyleEngine.MergeStyleSets(styles, styles2, styles3, new StyleSetFake { Root = "c" });
+
+            var test = $"{styles}, {styles2}, {styles3}, {styles4}"; 
+            Assert.AreEqual(new StyleSetFake { Root = "a root-0" }, styles);
+            Assert.AreEqual(new StyleSetFake { Root = "b a root-0", }, styles2);
+            Assert.AreEqual(new StyleSetFake { Root = "a b root-1", }, styles3);
+            Assert.AreEqual(new StyleSetFake { Root = "a b c root-1", }, styles4);
+
+        }
+
+        [TestMethod]
+        [Description("can merge two sets with class names")]
+        public void CarMergeTwoSetsWithClassNames()
+        {
+            var styleSet1 = StyleEngine.MergeStyleSets(new StyleSetFake
+            {
+                Root = new Style[] {
+                    "ms-Foo", new Style{ Background = "red" }
+                },
+            });
+
+            var styleSet2 = StyleEngine.MergeStyleSets(styleSet1,new StyleSetFake
+            {
+                Root = new Style[] {
+                    "ms-Bar", new Style{ Background = "green" }
+                },
+            });
+            var test = $"{styleSet2}";
+            Assert.AreEqual(new StyleSetFake { Root = "ms-Foo ms-Bar root-1" }, styleSet2);
+            Assert.AreEqual(".root-0{background:red;}" + ".root-1{background:green;}", _stylesheet.GetRules());
+
         }
     }
 }

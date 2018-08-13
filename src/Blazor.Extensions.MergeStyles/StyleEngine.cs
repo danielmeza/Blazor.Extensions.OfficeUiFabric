@@ -26,13 +26,13 @@ namespace Blazor.Extensions.MergeStyles
             {
                 if (currentSet?.Any() == true || (currentSet?.IsBool == true && currentSet.Bolean.Value))
                 {
-                    foreach (var key in currentSet.Keys)
+                    foreach (var pair in currentSet)
                     {
-                        var prop = key.properertyName;
-                        if (prop == "SubComponentStyles" && currentSet.ContainsKey(key))
+                        var prop = pair.Key.properertyName;
+                        if (prop == "SubComponentStyles")
                         {
                             // subcomponent styles - style functions or objects
-                            var currentComponentStyles = (IDictionary<string, object>)currentSet[key];
+                            var currentComponentStyles = (IDictionary<string, object>)pair.Value;
                             foreach (var subCompProp in currentComponentStyles)
                             {
                                 if (workingSubcomponentStyles.ContainsKey(subCompProp.Key))
@@ -49,21 +49,19 @@ namespace Blazor.Extensions.MergeStyles
 
                         // the as any casts below is a workaround for ts 2.8.
                         // todo: remove cast to any in ts 2.9.
-                        Style mergedValue;
-                        var currentValue = (Style)currentSet[key];
+                        object value;
+                        var currentValue = (Style)pair.Value;
 
-                        if (!mergedSet.ContainsKey(key))
+                        if (!mergedSet.TryGetValue(pair.Key, out value))
                         {
                             ((IStyleSet<T>)mergedSet).AddStyle(prop, currentValue);
                         }
-                        else
+                        else if (value is Style mergedValue)
                         {
-                            mergedValue = (Style)mergedSet[key];
                             var styleSet = ((IStyleSet<T>)mergedSet);
-                            styleSet.AddStyle(prop, new Style[] {
-                                mergedValue.IsArray ? mergedValue.Array : new Style[] { mergedValue },
-                                currentValue.IsArray ? currentValue.Array : new Style[] { currentValue }
-                            });
+                            var mvalues = mergedValue.IsArray ? mergedValue.Array : new[] { mergedValue };
+                            var values = mvalues.Concat(currentValue.IsArray ? currentValue.Array : new[] { currentValue }).ToArray();
+                            styleSet.AddStyle(prop, values);
                         }
                     }
                 }
@@ -152,7 +150,7 @@ namespace Blazor.Extensions.MergeStyles
         /// </summary>
         /// <param name="args"></param>
         /// <returns></returns>
-        public static async Task<string> MeregeStyle(params Style[] args)
+        public static async Task<string> MergeStyle(params Style[] args)
         {
             (List<string> classes, List<Style> objects) = await ExtractStyleParts(args);
             if (objects.Any())
@@ -188,7 +186,7 @@ namespace Blazor.Extensions.MergeStyles
         /// <param name="onRender">Function that returns a string</param>
         /// <param name="namespace">Optional namespace to prepend to css classnames to avoid collisions</param>
         /// <returns></returns>
-        public static (string html, string css) RenderStatic(Func<string> onRender, string @namespace)
+        public static (string html, string css) RenderStatic(Func<string> onRender, string @namespace = null)
         {
             var stylesheet = Stylesheet.GetInstance().ConfigureAwait(false).GetAwaiter().GetResult();
             stylesheet.SetConfig(new StyleSheetConfig() { InjectionMode = InjectionMode.None, Namespace = @namespace });
@@ -207,7 +205,7 @@ namespace Blazor.Extensions.MergeStyles
                 return new T();
 
             var styleSet = styleSets[0];
-            StyleSet<T> concatenatedStyleSet = styleSet != null;
+            StyleSet<T> concatenatedStyleSet = styleSet;
             if (styleSets.Any())
             {
                 concatenatedStyleSet = ConcatStyleSet(styleSets);
@@ -233,8 +231,9 @@ namespace Blazor.Extensions.MergeStyles
                 registrations.Add(registration);
                 if (registration != null)
                 {
-                    classMap.Add(styleSetArea.Key.key, registration.ClassName);
-                    ((IStyleSet<T>)classNameSet).AddStyle(styleSetArea.Key.properertyName, classes.Concat(new string[] { registration.ClassName }).Join(" "));
+                    classMap[styleSetArea.Key.key] = registration.ClassName;
+                    var value = classes.Concat(new string[] { registration.ClassName }).Join(" ");
+                    ((IStyleSet<T>)classNameSet).AddStyle(styleSetArea.Key.properertyName, value);
                 }
             }
 

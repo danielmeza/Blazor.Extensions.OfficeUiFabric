@@ -296,10 +296,7 @@ namespace Blazor.Extensions.MergeStyles
                 var jsonProperty = prop.GetCustomAttribute<JsonPropertyAttribute>();
                 propertyName = jsonProperty.PropertyName;
             }
-            else
-            {
-                propertyName = prop.Name.ToCamelCase();
-            }
+          
 
             //Remove the value if default
             if (value == default && this.Dictionary.ContainsKey(propertyName))

@@ -46,7 +46,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can expand previously registered rules")]
         public async Task CanExpandPreviouslyRegisteredRules()
         {
-            var className = await StyleEngine.MeregeStyle(new Style { Left = 1 });
+            var className = await StyleEngine.MergeStyle(new Style { Left = 1 });
 
             (List<string> classes, List<Style> objects) = await StyleEngine.ExtractStyleParts(className, new Style { Left = 2 });
 
