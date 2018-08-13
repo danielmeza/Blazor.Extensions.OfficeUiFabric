@@ -86,12 +86,9 @@ namespace Blazor.Extensions.MergeStyles
                 else if (arg != null)
                 {
                     // tslint:disable-next-line:no-any
-                    foreach (var prop in arg.Keys)
+                    foreach (var prop in arg?.Keys)
                     {
-
-
-
-                        if (prop == "Selectors")
+                        if (prop == "Selectors" || prop == "selectors")
                         {
                             var selectors = arg.Selectors;
                             foreach (var key in selectors.Keys)
@@ -165,7 +162,7 @@ namespace Blazor.Extensions.MergeStyles
             currentRules[name + "Left"] = partTree ?? partOne ?? partZero;
         }
 
-        private static async Task<string> serializeRuleEntries(IDictionary<string, object> ruleEntries)
+        public static async Task<string> SerializeRuleEntries(IDictionary<string, object> ruleEntries)
         {
             if (ruleEntries?.Any() != true)
             {
@@ -251,7 +248,7 @@ namespace Blazor.Extensions.MergeStyles
                     foreach (var selector in rules.__order)
                     {
                         rulesToInsert.Add(selector);
-                        rulesToInsert.Add(await serializeRuleEntries((Dictionary<string, object>)rules[selector]));
+                        rulesToInsert.Add(await SerializeRuleEntries((Dictionary<string, object>)rules[selector]));
                     }
                     registration.RulesToInsert = rulesToInsert;
                 }
@@ -306,17 +303,20 @@ namespace Blazor.Extensions.MergeStyles
                     {
                         var selector = registration.RulesToInsert[i];
 
-                        selector = Regex.Replace(selector, @"(&)|\$([\w-]+)\b", (m) =>
+                        selector = Regex.Replace(selector, @"(&)|\$([\w-]+)\b", (match) =>
                          {
+                             var amp = match.Groups[1];
+                             var cn = match.Groups[2];
 
-                             if (m.Captures.Count > 0)
+                             if (amp.Success)
                              {
                                  return "." + registration.ClassName;
                              }
-                             else if (m.Value != null)
+                             else if (cn.Success)
                              {
                                  string value = null;
-                                 return "." + ((classMap?.TryGetValue(m.Value, out value)) == true ? value : m.Value);
+                                 var success = classMap?.TryGetValue(cn.Value, out value);
+                                 return "." + (success == true ? value : cn.Value);
                              }
                              return "";
                          }, RegexOptions.Compiled);

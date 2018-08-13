@@ -19,6 +19,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         public static async Task ClassInitialize(TestContext context)
         {
             _stylesheet = await Stylesheet.GetInstance();
+            _stylesheet.Reset();
             _stylesheet.SetConfig(new StyleSheetConfig() { InjectionMode = InjectionMode.None });
         }
 

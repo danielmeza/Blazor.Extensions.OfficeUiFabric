@@ -79,7 +79,7 @@ namespace Blazor.Extensions.MergeStyles
         /// </summary>
         /// <param name="displayName">Optional value to use as a prefix</param>
         /// <returns></returns>
-        public string GetClassName(string displayName)
+        public string GetClassName(string displayName = null)
         {
             var (defaultName, model, defaultPrefix) = this._styleSheetConfig;
 
@@ -133,6 +133,18 @@ namespace Blazor.Extensions.MergeStyles
             return false;
         }
 
+        public Style[] GetArgsFromclassName(string className)
+        {
+            Tuple<Style[], string[]> value = null;
+            if (this._classNamesToArgs.TryGetValue(className, out value))
+            {
+                return value.Item1;
+
+            }
+            return null;
+
+        }
+
         /// <summary>
         /// Gets the arguments associated with a given classname which was
         /// previously registered using cacheClassName.
@@ -157,6 +169,7 @@ namespace Blazor.Extensions.MergeStyles
                 this._preservedRules.Add(rule);
             }
 
+
             if (this._styleSheetConfig.InjectionMode != InjectionMode.None)
             {
                 this._runtime?.InvokeAsync<object>(INJECT_RULE, rule, this._styleSheetConfig.InjectionMode, preserve);
@@ -164,10 +177,16 @@ namespace Blazor.Extensions.MergeStyles
             else
             {
                 this._rules.Add(rule);
+
             }
 
 
             RuleInserted?.Invoke(this, new StyleRuleInsertEventArgs(rule));
+        }
+
+        private object getStyleElement()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

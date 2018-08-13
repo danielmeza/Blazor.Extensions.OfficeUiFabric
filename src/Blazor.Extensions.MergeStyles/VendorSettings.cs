@@ -9,7 +9,7 @@ namespace Blazor.Extensions.MergeStyles
 {
     public class VendorSettings
     {
-        private const string GET_VENDOR_SETTINGS = "BlazorExtensions.MergeStyles.GetVenedorSettings";
+        public const string GET_VENDOR_SETTINGS = "BlazorExtensions.MergeStyles.GetVenedorSettings";
         private static VendorSettings _current;
 
         public bool IsWebKit { get; set; }

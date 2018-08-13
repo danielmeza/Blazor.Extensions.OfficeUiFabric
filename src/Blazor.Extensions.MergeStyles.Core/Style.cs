@@ -12,11 +12,13 @@ namespace Blazor.Extensions.MergeStyles
     using System.Collections.Generic;
 
     using System.Globalization;
+    using System.Linq;
+    using Blazor.Extensions.MergeStyles.Extensions;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
 
-    public class Style : RawStyle, IEnumerable<Style>
+    public class Style : RawStyle, IEnumerable<Style>, IComparable<Style>
     {
         public Style()
         {
@@ -27,10 +29,7 @@ namespace Blazor.Extensions.MergeStyles
         {
             this.Array = styles;
         }
-        public Style[] Array { get; internal set; }
 
-
-        public bool IsArray => this.Array != null;
 
         public static implicit operator Style(Style[] values) => new Style() { Array = values };
 
@@ -40,25 +39,46 @@ namespace Blazor.Extensions.MergeStyles
 
         public static implicit operator Style(int value) => new Style() { Numnber = value };
 
+        public static implicit operator Style(string[] values) => values.Select(v => new Style { String = v }).ToArray();
 
         public static explicit operator int(Style style) => style.Numnber ?? throw new InvalidCastException("The style is not a number value");
         public static explicit operator bool(Style style) => style.Bool ?? throw new InvalidCastException("The style is not a boolean value");
         public static explicit operator string(Style style) => style.IsString ? style.String : throw new InvalidCastException("The style is not a string value");
-        //public static explicit operator Style[] (Style style) => style.Array ?? throw new InvalidCastException("The style is not an array value");
 
+
+        public static bool operator ==(Style style1, string style2)
+        {
+            if (style1 is null && style2 is null)
+                return true;
+            return style1?.IsString == true && style1.String == style2;
+        }
+
+        public static bool operator !=(Style style1, string style2)
+        {
+            if (style1 == null && style2 == null)
+                return false;
+            return !(style1?.IsString == true && style1.String == style2);
+        }
 
         public override bool Equals(object obj)
         {
             if (!(obj is Style style))
                 return false;
-            if (this.IsArray)
-                return this.Array == style.Array;
-            if (style.IsNumber)
+
+            if (this.IsNumber && style.IsNumber)
                 return this.Numnber == style.Numnber;
-            if (style.IsString)
+
+            if (this.IsString && style.IsString)
                 return this.String == style.String;
-            if (style.IsBool)
+
+            if (this.IsBool && style.IsBool)
                 return this.Bool == style.Bool;
+
+            if (this.IsArray && style.IsArray)
+                return this.Array.Any(t => style.Array.Any(o => !o.Equals(t)));
+
+            if (this.Dictionary.AreEquals(style.Dictionary) && this.Selectors.AreEquals(style.Selectors))
+                return true;
 
             return base.Equals(obj);
         }
@@ -80,6 +100,29 @@ namespace Blazor.Extensions.MergeStyles
         IEnumerator<Style> IEnumerable<Style>.GetEnumerator()
         {
             return this.Enumerator;
+        }
+
+        public int CompareTo(Style other)
+        {
+            if (this.IsNull || other.IsNull)
+                return 1;
+
+            if (this.IsString && other.IsString)
+                return this.String == other.String ? 0 : 1;
+
+            if (this.IsNumber && other.IsNumber)
+                return this.Numnber == other.Numnber ? 0 : 1;
+
+            if (this.IsBool && other.IsBool)
+                return this.Bool == other.Bool ? 0 : 1;
+
+            if (this.IsArray && other.IsArray)
+                return this.Array.Any(t => other.Array.Any(o => o.CompareTo(t) != 0)) ? 1 : 0;
+
+            if (this.Dictionary.AreEquals(other.Dictionary))
+                return 0;
+
+            return 1;
         }
 
         public StyleEnum Enumerator => new StyleEnum(this.Array);
@@ -149,15 +192,21 @@ namespace Blazor.Extensions.MergeStyles
         public bool IsString => this.String != null;
         public bool IsNumber => this.Numnber.HasValue;
         public bool IsBool => this.Bool.HasValue;
+        public bool IsArray => this.Array != null;
+
+        [NotParse]
+        public Style[] Array { get; internal set; }
 
         [NotParse]
         public string String { get; internal set; }
+
         [NotParse]
         public bool? Bool { get; internal set; }
+
         [NotParse]
         public int? Numnber { get; internal set; }
 
-        public bool IsNull => this.Bool is null && this.Numnber is null && this.String is null;
+        public bool IsNull => this.Bool is null && this.Numnber is null && this.String is null && this.Array is null;
 
         /// <summary>
         /// Display name for the style.

@@ -23,5 +23,14 @@ namespace Blazor.Extensions.MergeStyles.Extensions
         public static string ToCamelCase(this string value) => char.ToLowerInvariant(value[0]) + value.Substring(1);
 
         public static string FirstUpper(this string value)  => char.ToUpperInvariant(value[0]) + value.Substring(1);
+
+
+        public static string Kebab(this string value)
+        {
+            return Regex
+                     .Replace(value.ToCamelCase(), @"([A-Z])", "-$1", RegexOptions.Compiled)
+                     .Trim()
+                     .ToLower();
+        }
     }
 }

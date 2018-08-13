@@ -16,9 +16,10 @@ namespace Blazor.Extensions.MergeStyles.Tests
             //Initialize a fake IJSRuntime with the necesary functions to work
             var jsRuntimeMock = new Mock<IJSRuntime>();
             jsRuntimeMock.Setup((rt) => rt.InvokeAsync<object>("Init", null)).Returns(Task.FromResult<object>(null));
-
+            jsRuntimeMock.Setup((rt) => rt.InvokeAsync<VendorSettings>(VendorSettings.GET_VENDOR_SETTINGS)).Returns(Task.FromResult(new VendorSettings() { IsMoz = true, IsMs = true, IsOpera = true, IsWebKit = true }));
             JSRuntime.SetCurrentJSRuntime(jsRuntimeMock.Object);
         }
-        public void Init() => BaseTest.Initialize();
+
+        public void Init() => Initialize();
     }
 }
