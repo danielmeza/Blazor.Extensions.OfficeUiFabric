@@ -41,7 +41,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("supports overriding the default prefix")]
         public async Task SupportOverridingTheDefaultPrefix()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style { Background = "red" });
+            var className = await StyleEngine.StyleToClassName(new Style { Background = "red" });
 
             Assert.AreEqual(className, "myCss-0");
             Assert.AreEqual(".myCss-0{background:red;}", _stylessheet.GetRules());

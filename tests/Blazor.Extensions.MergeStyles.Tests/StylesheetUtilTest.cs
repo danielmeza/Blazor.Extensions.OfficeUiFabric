@@ -33,17 +33,17 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can register classes and avoid re-registering")]
         public async Task CanRegisterClassesAndAvoidReRegistering()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style { Background = "red" });
+            var className = await StyleEngine.StyleToClassName(new Style { Background = "red" });
 
             Assert.AreEqual("css-0", className, $"Bad generated class name, expected css-0 and get {className}");
             Assert.AreEqual(".css-0{background:red;}", _stylesheet.GetRules());
 
-            className = await StylesheetUtil.StyleToClassName(new Style { Background = "red" });
+            className = await StyleEngine.StyleToClassName(new Style { Background = "red" });
 
             Assert.AreEqual("css-0", className, $"Bad generated class name, expected css-0 and get {className}");
             Assert.AreEqual(".css-0{background:red;}", _stylesheet.GetRules());
 
-            className = await StylesheetUtil.StyleToClassName(new Style { Background = "green" });
+            className = await StyleEngine.StyleToClassName(new Style { Background = "green" });
 
             Assert.AreEqual("css-1", className, $"Bad generated class name, expected css-0 and get {className}");
             Assert.AreEqual(".css-0{background:red;}.css-1{background:green;}", _stylesheet.GetRules());
@@ -53,7 +53,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can have child selectors")]
         public async Task CanHaveChildSelector()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style
+            var className = await StyleEngine.StyleToClassName(new Style
             {
                 Selectors =
                 {
@@ -68,7 +68,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can have same element class selectors")]
         public async Task CanHaveSameElementClassSelector()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style
+            var className = await StyleEngine.StyleToClassName(new Style
             {
                 Selectors =
                 {
@@ -82,7 +82,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can register pseudo selectors")]
         public async Task CanRegisterPseduoSelectors()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style
+            var className = await StyleEngine.StyleToClassName(new Style
             {
                 Selectors = new Dictionary<string, Style>
                 {
@@ -107,7 +107,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
                     [".parent &"] = new Style { Background = "green" }
                 }
             };
-            var className = await StylesheetUtil.StyleToClassName(style);
+            var className = await StyleEngine.StyleToClassName(style);
 
             Assert.AreEqual("css-0", className, $"Bad generated class name, expected css-0 and get {className}");
             Assert.AreEqual(".css-0 .child{background:red;}.parent .css-0{background:green;}", _stylesheet.GetRules());
@@ -117,7 +117,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can merge rules")]
         public async Task CanMergeTools()
         {
-            var className = await StylesheetUtil.StyleToClassName(
+            var className = await StyleEngine.StyleToClassName(
                  null,
                  false,
                  null,
@@ -127,7 +127,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
             Assert.AreEqual("css-0", className, $"Bad generated class name, expected css-0 and get {className}");
             Assert.AreEqual(".css-0{background-color:green;color:white;}", _stylesheet.GetRules());
 
-            className = await StylesheetUtil.StyleToClassName(new Style { BackgroundColor = "green", Color = "white" });
+            className = await StyleEngine.StyleToClassName(new Style { BackgroundColor = "green", Color = "white" });
             Assert.AreEqual("css-0", className, $"Bad generated class name, expected css-0 and get {className}");
         }
 
@@ -135,7 +135,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("returns blank string with no input")]
         public async Task ReturnBlankStringWithNoInput()
         {
-            var className = await StylesheetUtil.StyleToClassName();
+            var className = await StyleEngine.StyleToClassName();
             Assert.AreEqual(className, "");
         }
 
@@ -143,7 +143,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("does not emit a rule which has an undefined value")]
         public async Task DoesNotEmitRuleWhichHasAnUndefinedValue()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style() { FontFamily = null });
+            var className = await StyleEngine.StyleToClassName(new Style() { FontFamily = null });
             Assert.AreEqual(string.Empty, className);
             Assert.AreEqual("", _stylesheet.GetRules());
         }
@@ -152,9 +152,9 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("returns the same class name for a rule that only has a displayName")]
         public async Task SameClassNameForOnlyDysplayNameRule()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style() { DisplayName = "foo" });
+            var className = await StyleEngine.StyleToClassName(new Style() { DisplayName = "foo" });
             Assert.AreEqual("foo-0", className);
-            className = await StylesheetUtil.StyleToClassName(new Style() { DisplayName = "foo" });
+            className = await StyleEngine.StyleToClassName(new Style() { DisplayName = "foo" });
             Assert.AreEqual("foo-0", className);
             Assert.AreEqual("", _stylesheet.GetRules());
         }
@@ -163,9 +163,9 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can preserve displayName in names")]
         public async Task CanPreserveDisplayNameInNames()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style() { DisplayName = "foo" });
+            var className = await StyleEngine.StyleToClassName(new Style() { DisplayName = "foo" });
             Assert.AreEqual("foo-0", className);
-            className = await StylesheetUtil.StyleToClassName(new Style() { DisplayName = "foo" });
+            className = await StyleEngine.StyleToClassName(new Style() { DisplayName = "foo" });
             Assert.AreEqual("foo-0", className);
             Assert.AreEqual("", _stylesheet.GetRules());
         }
@@ -176,7 +176,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         {
             await TransformationsRules.SetRTL(true);
             var style = new Style() { Left = 40 };
-            var className = await StylesheetUtil.StyleToClassName(style);
+            var className = await StyleEngine.StyleToClassName(style);
             Assert.AreEqual(".css-0{right:40px;}", _stylesheet.GetRules());
             await TransformationsRules.SetRTL(false);
         }
@@ -187,7 +187,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         {
             VendorSettings.SetCurrent(new VendorSettings { IsWebKit = true });
             var style = new Style() { WebkitFontSmoothing = FontSmoothing.None };
-            var className = await StylesheetUtil.StyleToClassName(style);
+            var className = await StyleEngine.StyleToClassName(style);
             Assert.AreEqual(".css-0{-webkit-font-smoothing:none;}", _stylesheet.GetRules());
             VendorSettings.SetCurrent(null);
 
@@ -198,8 +198,8 @@ namespace Blazor.Extensions.MergeStyles.Tests
         public async Task CanExpandPreviusDfinedRules()
         {
             var style = new Style() { Background = "red" };
-            var className = await StylesheetUtil.StyleToClassName(style);
-            var newClassName = await StylesheetUtil.StyleToClassName(className, new Style { Color = "white" });
+            var className = await StyleEngine.StyleToClassName(style);
+            var newClassName = await StyleEngine.StyleToClassName(className, new Style { Color = "white" });
             Assert.AreEqual("css-1", newClassName);
 
             Assert.AreEqual(".css-0{background:red;}.css-1{background:red;color:white;}", _stylesheet.GetRules());
@@ -209,11 +209,11 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can expand previously defined rules in selectors")]
         public async Task CanExpandPreviouslyDefinedRulesInSelectors()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style
+            var className = await StyleEngine.StyleToClassName(new Style
             {
                 Background = "red"
             });
-            var newClassName = await StylesheetUtil.StyleToClassName(new Style()
+            var newClassName = await StyleEngine.StyleToClassName(new Style()
             {
                 Selectors = {
                     ["& > *"] = className
@@ -227,7 +227,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can register global selectors")]
         public async Task CanRegisterGlobalSelectors()
         {
-            var className = await StylesheetUtil.StyleToClassName(new Style()
+            var className = await StyleEngine.StyleToClassName(new Style()
             {
                 Selectors =
                 {
@@ -245,7 +245,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         public async Task CanExpandAnArrayOfRules()
         {
 
-            await StylesheetUtil.StyleToClassName(new Style[] { new Style { Background = "red" }, new Style { Background = "white" } });
+            await StyleEngine.StyleToClassName(new Style[] { new Style { Background = "red" }, new Style { Background = "white" } });
             Assert.AreEqual(".css-0{background:white;}", _stylesheet.GetRules());
         }
 
@@ -253,7 +253,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can expand increased specificity rules")]
         public async Task CanExpandIncreasedSpecificityRules()
         {
-            await StylesheetUtil.StyleToClassName(new Style
+            await StyleEngine.StyleToClassName(new Style
             {
                 Selectors =
                 {
@@ -269,7 +269,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
         [Description("can apply media queries")]
         public async Task CanApplyMediaQueries()
         {
-            await StylesheetUtil.StyleToClassName(new Style
+            await StyleEngine.StyleToClassName(new Style
             {
                 Background = "blue",
                 Selectors =

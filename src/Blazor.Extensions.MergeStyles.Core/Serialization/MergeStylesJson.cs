@@ -15,7 +15,7 @@ namespace Blazor.Extensions.MergeStyles
         public static string ToJson(this string self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
         public static string ToJson(this object self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
         public static string ToJson(this IRawFontStyle self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
-        public static string ToJson(this IFontFace self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
+        public static string ToJson(this FontFace self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
         public static string ToJson(this RawStyleBase self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
     }
 }

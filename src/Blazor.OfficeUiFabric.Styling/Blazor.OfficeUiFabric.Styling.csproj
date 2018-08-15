@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Blazor.Extensions.MergeStyles.Core\Blazor.Extensions.MergeStyles.Core.csproj" />
+    <ProjectReference Include="..\Blazor.Extensions.MergeStyles\Blazor.Extensions.MergeStyles.csproj" />
   </ItemGroup>
 
 </Project>

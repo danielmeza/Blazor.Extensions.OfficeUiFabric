@@ -303,10 +303,10 @@ namespace Blazor.Extensions.MergeStyles
             {
                 this.Dictionary.Remove(propertyName);
             }
-            //add or update the new value
+            //add or update the value
             else
             {
-                this.Dictionary.AddOrUpdate(propertyName, value);
+                this.Dictionary[propertyName] = value;
             }
             return true;
 

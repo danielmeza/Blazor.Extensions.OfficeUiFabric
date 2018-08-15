@@ -365,6 +365,7 @@ namespace Blazor.Extensions.MergeStyles
             this.Double = value;
             this.Integer = null;
             this.Enum = null;
+            this.String = null;
         }
 
         public FontWeight(int value)
@@ -372,10 +373,20 @@ namespace Blazor.Extensions.MergeStyles
             this.Double = null;
             this.Integer = value;
             this.Enum = null;
+            this.String = null;
         }
         public FontWeight(FontWeightValues value)
         {
             this.Enum = value;
+            this.Double = null;
+            this.Integer = null;
+            this.String = null;
+        }
+
+        public FontWeight(string value)
+        {
+            this.String = value;
+            this.Enum = null;
             this.Double = null;
             this.Integer = null;
         }
@@ -386,12 +397,20 @@ namespace Blazor.Extensions.MergeStyles
 
         public long? Integer { get; internal set; }
 
+        public string String { get; internal set; }
 
-
+        public static implicit operator FontWeight(string value) => new FontWeight() { String = value };
         public static implicit operator FontWeight(FontWeightValues value) => new FontWeight() { Enum = value };
         public static implicit operator FontWeight(double value) => new FontWeight() { Double = value };
         public static implicit operator FontWeight(int value) => new FontWeight() { Integer = value };
-        public bool IsNull => this.Double == null && this.Integer == null && this.Enum == null;
+
+        public bool IsNull => this.Double == null && this.Integer == null && this.Enum == null && this.String == null;
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this, Converter.Settings);
+        }
+
     }
 
     public partial struct ColumnCount
@@ -433,35 +452,6 @@ namespace Blazor.Extensions.MergeStyles
         public bool IsNull => this.Double == null && this.Enum == null;
     }
 
-    public partial struct IcssRule
-    {
-        public static CssRule FromJson(string json) => JsonConvert.DeserializeObject<CssRule>(json, Blazor.Extensions.MergeStyles.Converter.Settings);
-    }
-
-    public class IcssPercentageRule
-    {
-        public static string FromJson(string json) => JsonConvert.DeserializeObject<string>(json, Blazor.Extensions.MergeStyles.Converter.Settings);
-    }
-
-    public class IcssPixelUnitRule
-    {
-        public static object FromJson(string json) => JsonConvert.DeserializeObject<object>(json, Blazor.Extensions.MergeStyles.Converter.Settings);
-    }
-
-    public class IFontWeight
-    {
-        public static object FromJson(string json) => JsonConvert.DeserializeObject<object>(json, Blazor.Extensions.MergeStyles.Converter.Settings);
-    }
-
-    public partial class IRawFontStyle
-    {
-        public static IRawFontStyle FromJson(string json) => JsonConvert.DeserializeObject<IRawFontStyle>(json, Blazor.Extensions.MergeStyles.Converter.Settings);
-    }
-
-    public partial class IFontFace
-    {
-        public static IFontFace FromJson(string json) => JsonConvert.DeserializeObject<IFontFace>(json, Blazor.Extensions.MergeStyles.Converter.Settings);
-    }
 
 
 

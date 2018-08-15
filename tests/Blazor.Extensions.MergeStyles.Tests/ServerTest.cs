@@ -38,7 +38,7 @@ namespace Blazor.Extensions.MergeStyles.Tests
 
         [TestMethod]
         [Description("can namespace things")]
-        public void CanNamespaceThings()
+        public async Task CanNamespaceThings()
         {
 
             (var html, var css) = StyleEngine.RenderStatic(() =>
@@ -53,9 +53,12 @@ namespace Blazor.Extensions.MergeStyles.Tests
 
                 return $"<div class=\"{classNames.Root}\">Hello!</div>";
             }, "test");
-
+            var sheet = await Stylesheet.GetInstance();
+            sheet.SetConfig(new StyleSheetConfig { InjectionMode = InjectionMode.None, Namespace = null, DefaultPrefix = "css" });
             Assert.AreEqual("<div class=\"test-root-0\">Hello!</div>", html);
             Assert.AreEqual(".test-root-0{background:red;}", css);
+
+
         }
 
     }

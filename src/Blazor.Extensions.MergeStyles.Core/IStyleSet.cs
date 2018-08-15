@@ -3,13 +3,17 @@ using System.Collections.Generic;
 
 namespace Blazor.Extensions.MergeStyles
 {
-    public interface IStyleSet<T>
-        where T : IStyleSet<T>
+    public interface IStyleSet<T> :IStyleSet
+    {
+       
+
+     
+    }
+
+    public interface IStyleSet
     {
         Dictionary<string, object> SubComponentStyles { get; set; }
 
         void AddStyle(string key, Style styleSet);
-
-     
     }
 }

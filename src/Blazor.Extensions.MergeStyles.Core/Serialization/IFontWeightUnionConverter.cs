@@ -61,8 +61,9 @@ namespace Blazor.Extensions.MergeStyles
                             return new FontWeight { Enum = FontWeightValues.Normal };
                         case "unset":
                             return new FontWeight { Enum = FontWeightValues.Unset };
+                        default:
+                            return stringValue;
                     }
-                    break;
             }
             throw new Exception("Cannot unmarshal type IFontWeightUnion");
         }
@@ -72,12 +73,12 @@ namespace Blazor.Extensions.MergeStyles
             var value = (FontWeight)untypedValue;
             if (value.Integer != null)
             {
-                 writer.WriteRawValue(value.Integer.Value.ToString());
+                writer.WriteRawValue(value.Integer.Value.ToString());
                 return;
             }
             if (value.Double != null)
             {
-                 writer.WriteRawValue(value.Double.Value.ToString());
+                writer.WriteRawValue(value.Double.Value.ToString());
                 return;
             }
             if (value.Enum != null)
@@ -85,54 +86,61 @@ namespace Blazor.Extensions.MergeStyles
                 switch (value.Enum)
                 {
                     case FontWeightValues.The100:
-                         writer.WriteRawValue("100");
+                        writer.WriteRawValue("100");
                         return;
                     case FontWeightValues.The200:
-                         writer.WriteRawValue("200");
+                        writer.WriteRawValue("200");
                         return;
                     case FontWeightValues.The300:
-                         writer.WriteRawValue("300");
+                        writer.WriteRawValue("300");
                         return;
                     case FontWeightValues.The400:
-                         writer.WriteRawValue("400");
+                        writer.WriteRawValue("400");
                         return;
                     case FontWeightValues.The500:
-                         writer.WriteRawValue("500");
+                        writer.WriteRawValue("500");
                         return;
                     case FontWeightValues.The600:
-                         writer.WriteRawValue("600");
+                        writer.WriteRawValue("600");
                         return;
                     case FontWeightValues.The700:
-                         writer.WriteRawValue("700");
+                        writer.WriteRawValue("700");
                         return;
                     case FontWeightValues.The800:
-                         writer.WriteRawValue("800");
+                        writer.WriteRawValue("800");
                         return;
                     case FontWeightValues.The900:
-                         writer.WriteRawValue("900");
+                        writer.WriteRawValue("900");
                         return;
                     case FontWeightValues.Bold:
-                         writer.WriteRawValue("bold");
+                        writer.WriteRawValue("bold");
                         return;
                     case FontWeightValues.Bolder:
-                         writer.WriteRawValue("bolder");
+                        writer.WriteRawValue("bolder");
                         return;
                     case FontWeightValues.Inherit:
-                         writer.WriteRawValue("inherit");
+                        writer.WriteRawValue("inherit");
                         return;
                     case FontWeightValues.Initial:
-                         writer.WriteRawValue("initial");
+                        writer.WriteRawValue("initial");
                         return;
                     case FontWeightValues.Lighter:
-                         writer.WriteRawValue("lighter");
+                        writer.WriteRawValue("lighter");
                         return;
                     case FontWeightValues.Normal:
-                         writer.WriteRawValue("normal");
+                        writer.WriteRawValue("normal");
                         return;
                     case FontWeightValues.Unset:
-                         writer.WriteRawValue("unset");
+                        writer.WriteRawValue("unset");
                         return;
+
                 }
+            }
+
+            if (!string.IsNullOrEmpty(value.String))
+            {
+                writer.WriteRawValue(value.String);
+                return;
             }
             throw new Exception("Cannot marshal type IFontWeightUnion");
         }
