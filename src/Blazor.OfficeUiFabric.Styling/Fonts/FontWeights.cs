@@ -1,4 +1,5 @@
 using Blazor.Extensions.MergeStyles;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace Blazor.OfficeUiFabric.Styling.Fonts
 {
 
-    public partial class FontWeights : ReadOnlyDictionary<string, FontWeight>
+    public partial class FontWeights : RawStyleBase
     {
         private FontWeight bold;
         private FontWeight light;
@@ -18,7 +19,7 @@ namespace Blazor.OfficeUiFabric.Styling.Fonts
         private FontWeight semibold;
         private FontWeight semiLight;
 
-        public FontWeights() : base(new Dictionary<string, FontWeight>())
+        public FontWeights()
         {
 
         }
@@ -28,12 +29,22 @@ namespace Blazor.OfficeUiFabric.Styling.Fonts
             this.Dictionary[propertyName] = value;
         }
 
+        [JsonProperty("bold", NullValueHandling = NullValueHandling.Ignore)]
         public FontWeight Bold { get => this.bold; set => this.bold = value; }
         public FontWeight Light { get => this.light; set => this.light = value; }
         public FontWeight Regular { get => this.regular; set => this.regular = value; }
         public FontWeight SemiBold { get => this.semibold; set => this.semibold = value; }
         public FontWeight SemiLight { get => this.semiLight; set => this.semiLight = value; }
 
+        public static FontWeights DefaultFontWeight => lazyFontWeight.Value;
+
+        static Lazy<FontWeights> lazyFontWeight = new Lazy<FontWeights>(() => new FontWeights
+        {
+            Regular = FontEngine.StandardFontWeight.Regular,
+            Light = FontEngine.StandardFontWeight.Light,
+            SemiBold = FontEngine.StandardFontWeight.SemiBold,
+            Bold = FontEngine.StandardFontWeight.Bold
+        });
 
     }
 }

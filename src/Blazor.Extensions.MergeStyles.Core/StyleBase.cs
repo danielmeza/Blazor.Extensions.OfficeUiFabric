@@ -354,6 +354,12 @@ namespace Blazor.Extensions.MergeStyles
         public static implicit operator FontSizeAdjust(FontSizeAdjustValues value) => new FontSizeAdjust() { Enum = value };
         public static implicit operator FontSizeAdjust(double value) => new FontSizeAdjust() { Double = value };
 
+        public static explicit operator string(FontSizeAdjust value) => value.ToString();
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this, Converter.Settings);
+        }
         public bool IsNull => this.Double == null && this.Enum == null;
     }
 
@@ -403,6 +409,8 @@ namespace Blazor.Extensions.MergeStyles
         public static implicit operator FontWeight(FontWeightValues value) => new FontWeight() { Enum = value };
         public static implicit operator FontWeight(double value) => new FontWeight() { Double = value };
         public static implicit operator FontWeight(int value) => new FontWeight() { Integer = value };
+
+        public static explicit operator string(FontWeight value) => value.ToString();
 
         public bool IsNull => this.Double == null && this.Integer == null && this.Enum == null && this.String == null;
 

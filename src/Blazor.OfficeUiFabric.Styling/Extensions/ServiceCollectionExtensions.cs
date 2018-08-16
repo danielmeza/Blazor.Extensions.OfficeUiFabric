@@ -12,7 +12,6 @@ namespace Blazor.OfficeUiFabric.Styling.Extensions
     {
         public static IServiceCollection AddDefaultStyles(this IServiceCollection services)
         {
-            services.AddSingleton<DefaultPalette>();
             services.AddSingleton<IFontEngine, FontEngine>();
             
             return services;

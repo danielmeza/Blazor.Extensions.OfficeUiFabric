@@ -3,6 +3,7 @@ using Blazor.Extensions.MergeStyles;
 using Blazor.OfficeUiFabric.Styling;
 using Microsoft.AspNetCore.Blazor;
 using Microsoft.AspNetCore.Blazor.Components;
+using Microsoft.JSInterop;
 
 namespace Blazor.OfficeUiFabric.Components.Images
 {
@@ -119,7 +120,7 @@ namespace Blazor.OfficeUiFabric.Components.Images
         protected void OnImageLoaded(UIProgressEventArgs args)
         {
             this.OnLoad?.Invoke(args);
-
+            
             throw new NotImplementedException();
 
         }

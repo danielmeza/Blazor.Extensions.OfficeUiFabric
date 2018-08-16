@@ -9,6 +9,11 @@ namespace Blazor.Extensions.MergeStyles
 {
     public class Keyframes : Dictionary<string, Style>
     {
+        public Keyframes()
+        {
+            this.From = new Style();
+            this.To = new Style();
+        }
         public Style From
         {
             get
@@ -19,7 +24,8 @@ namespace Blazor.Extensions.MergeStyles
             }
             set
             {
-                this.AddOrUpdate("from", value);
+    
+                this["from"] = value;
             }
         }
 
@@ -33,7 +39,7 @@ namespace Blazor.Extensions.MergeStyles
             }
             set
             {
-                this.AddOrUpdate("to", value);
+                this["to"] = value;
             }
         }
 

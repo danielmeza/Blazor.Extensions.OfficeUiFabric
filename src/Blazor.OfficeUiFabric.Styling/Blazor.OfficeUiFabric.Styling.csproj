@@ -7,6 +7,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Blazor.Extensions.MergeStyles.Core\Blazor.Extensions.MergeStyles.Core.csproj" />
     <ProjectReference Include="..\Blazor.Extensions.MergeStyles\Blazor.Extensions.MergeStyles.csproj" />
+    <ProjectReference Include="..\Blazor.OfficeUiFabric.Utilities\Blazor.OfficeUiFabric.Utilities.csproj" />
+    <ProjectReference Include="..\Mono.WebAssembly.Browser\Mono.WebAssembly.Browser.csproj" />
   </ItemGroup>
 
 </Project>
