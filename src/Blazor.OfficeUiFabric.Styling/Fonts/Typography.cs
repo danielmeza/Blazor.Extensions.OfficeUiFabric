@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Blazor.OfficeUiFabric.Styling.Fonts
 {
-    public partial class Typography
+    public partial class Typography 
     {
         public FontFamilies Families { get; set; }
         public FontSizes Sizes { get; set; }

@@ -14,7 +14,7 @@ namespace Blazor.OfficeUiFabric.Components.Images
         protected ImageCoverStyle _coverStyle = ImageCoverStyle.Portrait;
         protected ElementRef _imageElement;
         protected ElementRef _frameElement;
-        private static string _svgRegex = @"\.svg$";
+        //private static string _svgRegex = @"\.svg$";
 
         /// <summary>
         /// The image source

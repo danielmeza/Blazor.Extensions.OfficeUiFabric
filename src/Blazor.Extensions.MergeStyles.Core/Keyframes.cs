@@ -11,8 +11,7 @@ namespace Blazor.Extensions.MergeStyles
     {
         public Keyframes()
         {
-            this.From = new Style();
-            this.To = new Style();
+            
         }
         public Style From
         {

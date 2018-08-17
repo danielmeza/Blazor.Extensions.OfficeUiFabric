@@ -13,8 +13,12 @@ namespace Blazor.OfficeUiFabric.Styling
     {
         private Theme theme;
         const string ThemeSettingName = "theme";
+        private readonly ILoadThemeStyle loadThemeStyle;
 
-
+        public ThemingEngine(ILoadThemeStyle loadThemeStyle)
+        {
+            this.loadThemeStyle = loadThemeStyle;
+        }
 
         public event EventHandler<Theme> ThemeChanged;
 
@@ -42,8 +46,8 @@ namespace Blazor.OfficeUiFabric.Styling
         /// <param name="classNames">The global class names that apply when the flag is false</param>
         /// <param name="theme">The theme to check the flag on</param>
         /// <returns></returns>
-        public T GetBlobalClassNames<T>(T classNames, Theme theme)
-            where T : StyleSet<T>, new()
+        public T GetGlobalClassNames<T>(T classNames, Theme theme)
+            where T : StyleSet, new()
         {
             if (theme.DisableGlobalCalssNames)
             {
@@ -61,7 +65,8 @@ namespace Blazor.OfficeUiFabric.Styling
         /// <returns></returns>
         public Theme CreateTheme(Theme theme, bool depComments = false)
         {
-            var newPalette = new Palette().MergeValues(Palette.DefaultPalette, theme.Palette);
+            var newPalette = new Palette();
+            newPalette = newPalette.MergeValues(Palette.DefaultPalette, theme.Palette);
 
             if (theme.Palette == null || theme.Palette.Accent == null)
             {
@@ -113,8 +118,12 @@ namespace Blazor.OfficeUiFabric.Styling
         public Theme LoadTheme(Theme theme, bool depComments = false)
         {
             this.theme = CreateTheme(theme, depComments);
-            throw new NotImplementedException();
+            this.loadThemeStyle.LoadTheme(this.theme);
+            this.ThemeChanged?.Invoke(this, this.theme);
+            return this.theme;
         }
+
+
 
     }
 }

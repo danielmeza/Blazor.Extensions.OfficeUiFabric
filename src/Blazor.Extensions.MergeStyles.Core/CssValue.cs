@@ -64,7 +64,7 @@ namespace Blazor.Extensions.MergeStyles
         public static implicit operator CssValue(in string value) => new CssValue(value);
         public static implicit operator CssValue(in bool value) => new CssValue(value);
 
-        public static implicit operator CssValue(in AlignContent value) => new CssValue { String = JsonConvert.SerializeObject(value, Converter.Settings) };
+        public static implicit operator CssValue(in AlignContent value) => new CssValue { String = JsonConvert.SerializeObject(value, RawConverter.Settings) };
 
         public static explicit operator string(in CssValue rule) => rule.IsString ? rule.String : throw new InvalidCastException($"The rule {rule} is not a string value");
         public static explicit operator double(in CssValue rule) => rule.Double ?? throw new InvalidCastException($"The rule {rule} is not a double value");

@@ -11,7 +11,7 @@ namespace Blazor.OfficeUiFabric.Styling
     /// All Fabric standard animations, exposed as json objects referencing predefined
     /// keyframes. These objects can be mixed in with other class definitions.
     /// </summary>
-    public partial class AnimationStyles
+    public partial class AnimationStyles : StyleSet<AnimationStyles>
     {
 
         const string EASING_FUNCTION_1 = "cubic-bezier(.1,.9,.2,1)";
@@ -98,125 +98,126 @@ namespace Blazor.OfficeUiFabric.Styling
         });
 
         [JsonProperty("fadeIn100", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style FadeIn100 { get; set; }
+        public Style FadeIn100 { get => this.fadeIn100; set => this.SetProperty(ref this.fadeIn100, value); }
 
         [JsonProperty("fadeIn200", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style FadeIn200 { get; set; }
+        public Style FadeIn200 { get => this.fadeIn200; set => this.SetProperty(ref this.fadeIn200, value); }
 
         [JsonProperty("fadeIn400", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style FadeIn400 { get; set; }
+        public Style FadeIn400 { get => this.fadeIn400; set => this.SetProperty(ref this.fadeIn400, value); }
 
         [JsonProperty("fadeIn500", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style FadeIn500 { get; set; }
+        public Style FadeIn500 { get => this.fadeIn500; set => this.SetProperty(ref this.fadeIn500, value); }
 
         [JsonProperty("fadeOut100", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style FadeOut100 { get; set; }
+        public Style FadeOut100 { get => this.fadeOut100; set => this.SetProperty(ref this.fadeOut100, value); }
 
         [JsonProperty("fadeOut200", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style FadeOut200 { get; set; }
+        public Style FadeOut200 { get => this.fadeOut200; set => this.SetProperty(ref this.fadeOut200, value); }
 
         [JsonProperty("fadeOut400", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style FadeOut400 { get; set; }
+        public Style FadeOut400 { get => this.fadeOut400; set => this.SetProperty(ref this.fadeOut400, value); }
 
         [JsonProperty("fadeOut500", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style FadeOut500 { get; set; }
+        public Style FadeOut500 { get => this.fadeOut500; set => this.SetProperty(ref this.fadeOut500, value); }
 
         [JsonProperty("rotate90deg", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style Rotate90Deg { get; set; }
+        public Style Rotate90Deg { get => this.rotate90Deg; set => this.SetProperty(ref this.rotate90Deg, value); }
 
         [JsonProperty("rotateN90deg", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style RotateN90Deg { get; set; }
+        public Style RotateN90Deg { get => this.rotateN90Deg; set => this.SetProperty(ref this.rotateN90Deg, value); }
 
         [JsonProperty("scaleDownIn100", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style ScaleDownIn100 { get; set; }
+        public Style ScaleDownIn100 { get => this.scaleDownIn100; set => this.SetProperty(ref this.scaleDownIn100, value); }
 
         [JsonProperty("scaleDownOut98", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style ScaleDownOut98 { get; set; }
+        public Style ScaleDownOut98 { get => this.scaleDownOut98; set => this.SetProperty(ref this.scaleDownOut98, value); }
 
         [JsonProperty("scaleUpIn100", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style ScaleUpIn100 { get; set; }
+        public Style ScaleUpIn100 { get => this.scaleUpIn100; set => this.SetProperty(ref this.scaleUpIn100, value); }
 
         [JsonProperty("scaleUpOut103", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style ScaleUpOut103 { get; set; }
+        public Style ScaleUpOut103 { get => this.scaleUpOut103; set => this.SetProperty(ref this.scaleUpOut103, value); }
 
         [JsonProperty("slideDownIn10", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideDownIn10 { get; set; }
+        public Style SlideDownIn10 { get => this.slideDownIn10; set => this.SetProperty(ref this.slideDownIn10, value); }
 
         [JsonProperty("slideDownIn20", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideDownIn20 { get; set; }
+        public Style SlideDownIn20 { get => this.slideDownIn20; set => this.SetProperty(ref this.slideDownIn20, value); }
 
         [JsonProperty("slideDownOut10", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideDownOut10 { get; set; }
+        public Style SlideDownOut10 { get => this.slideDownOut10; set => this.SetProperty(ref this.slideDownOut10, value); }
 
         [JsonProperty("slideDownOut20", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideDownOut20 { get; set; }
+        public Style SlideDownOut20 { get => this.slideDownOut20; set => this.SetProperty(ref this.slideDownOut20, value); }
 
         [JsonProperty("slideLeftIn10", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideLeftIn10 { get; set; }
+        public Style SlideLeftIn10 { get => this.slideLeftIn10; set => this.SetProperty(ref this.slideLeftIn10, value); }
 
         [JsonProperty("slideLeftIn20", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideLeftIn20 { get; set; }
+        public Style SlideLeftIn20 { get => this.slideLeftIn20; set => this.SetProperty(ref this.slideLeftIn20, value); }
 
         [JsonProperty("slideLeftIn40", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideLeftIn40 { get; set; }
+
+        public Style SlideLeftIn40 { get => this.slideLeftIn40; set => this.SetProperty(ref this.slideLeftIn40, value); }
 
         [JsonProperty("slideLeftIn400", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideLeftIn400 { get; set; }
+        public Style SlideLeftIn400 { get => this.slideLeftIn400; set => this.SetProperty(ref this.slideLeftIn400, value); }
 
         [JsonProperty("slideLeftOut10", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideLeftOut10 { get; set; }
+        public Style SlideLeftOut10 { get => this.slideLeftOut10; set => this.SetProperty(ref this.slideLeftOut10, value); }
 
         [JsonProperty("slideLeftOut20", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideLeftOut20 { get; set; }
+        public Style SlideLeftOut20 { get => this.slideLeftOut20; set => this.SetProperty(ref this.slideLeftOut20, value); }
 
         [JsonProperty("slideLeftOut40", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideLeftOut40 { get; set; }
+        public Style SlideLeftOut40 { get => this.slideLeftOut40; set => this.SetProperty(ref this.slideLeftOut40, value); }
 
         [JsonProperty("slideLeftOut400", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideLeftOut400 { get; set; }
+        public Style SlideLeftOut400 { get => this.slideLeftOut400; set => this.SetProperty(ref this.slideLeftOut400, value); }
 
         [JsonProperty("slideRightIn10", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideRightIn10 { get; set; }
+        public Style SlideRightIn10 { get => this.slideRightIn10; set => this.SetProperty(ref this.slideRightIn10, value); }
 
         [JsonProperty("slideRightIn20", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideRightIn20 { get; set; }
+        public Style SlideRightIn20 { get => this.slideRightIn20; set => this.SetProperty(ref this.slideRightIn20, value); }
 
         [JsonProperty("slideRightIn40", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideRightIn40 { get; set; }
+        public Style SlideRightIn40 { get => this.slideRightIn40; set => this.SetProperty(ref this.slideRightIn40, value); }
 
         [JsonProperty("slideRightIn400", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideRightIn400 { get; set; }
+        public Style SlideRightIn400 { get => this.slideRightIn400; set => this.SetProperty(ref this.slideRightIn400, value); }
 
         [JsonProperty("slideRightOut10", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideRightOut10 { get; set; }
+        public Style SlideRightOut10 { get => this.slideRightOut10; set => this.SetProperty(ref this.slideRightOut10, value); }
 
         [JsonProperty("slideRightOut20", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideRightOut20 { get; set; }
+        public Style SlideRightOut20 { get => this.slideRightOut20; set => this.SetProperty(ref this.slideRightOut20, value); }
 
         [JsonProperty("slideRightOut40", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideRightOut40 { get; set; }
+        public Style SlideRightOut40 { get => this.slideRightOut40; set => this.SetProperty(ref this.slideRightOut40, value); }
 
         [JsonProperty("slideRightOut400", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideRightOut400 { get; set; }
+        public Style SlideRightOut400 { get => this.slideRightOut400; set => this.SetProperty(ref this.slideRightOut400, value); }
 
         [JsonProperty("slideUpIn10", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideUpIn10 { get; set; }
+        public Style SlideUpIn10 { get => this.slideUpIn10; set => this.SetProperty(ref this.slideUpIn10, value); }
 
         [JsonProperty("slideUpIn20", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideUpIn20 { get; set; }
+        public Style SlideUpIn20 { get => this.slideUpIn20; set => this.SetProperty(ref this.slideUpIn20, value); }
 
         [JsonProperty("slideUpOut10", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideUpOut10 { get; set; }
+        public Style SlideUpOut10 { get => this.slideUpOut10; set => this.SetProperty(ref this.slideUpOut10, value); }
 
         [JsonProperty("slideUpOut20", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style SlideUpOut20 { get; set; }
+        public Style SlideUpOut20 { get => this.slideUpOut20; set => this.SetProperty(ref this.slideUpOut20, value); }
 
 
         [JsonProperty("rotate90deg", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style Rotate90deg { get; set; }
+        public Style Rotate90deg { get => this.rotate90deg; set => this.SetProperty(ref this.rotate90deg, value); }
 
         [JsonProperty("rotateN90deg", Required = Required.DisallowNull, NullValueHandling = NullValueHandling.Ignore)]
-        public Style RotateN90deg { get; set; }
+        public Style RotateN90deg { get => this.rotateN90deg; set => this.SetProperty(ref this.rotateN90deg, value); }
 
         public AnimationVariables AnimationVariables => lazyAnimationVariables.Value;
 
@@ -278,7 +279,46 @@ namespace Blazor.OfficeUiFabric.Styling
             RotateN90deg = _createAnimation(ROTATE_N90, "0.1s", EASING_FUNCTION_2)
 
         });
-
+        private Style fadeIn100;
+        private Style fadeIn200;
+        private Style fadeIn400;
+        private Style fadeIn500;
+        private Style fadeOut100;
+        private Style fadeOut200;
+        private Style fadeOut400;
+        private Style fadeOut500;
+        private Style rotate90Deg;
+        private Style rotateN90Deg;
+        private Style scaleDownIn100;
+        private Style scaleDownOut98;
+        private Style scaleUpIn100;
+        private Style scaleUpOut103;
+        private Style slideDownIn10;
+        private Style slideDownIn20;
+        private Style slideDownOut10;
+        private Style slideDownOut20;
+        private Style slideLeftIn10;
+        private Style slideLeftIn20;
+        private Style slideLeftIn40;
+        private Style slideLeftIn400;
+        private Style slideLeftOut10;
+        private Style slideLeftOut20;
+        private Style slideLeftOut40;
+        private Style slideLeftOut400;
+        private Style slideRightIn10;
+        private Style slideRightIn20;
+        private Style slideRightIn40;
+        private Style slideRightIn400;
+        private Style slideRightOut10;
+        private Style slideRightOut20;
+        private Style slideRightOut40;
+        private Style slideRightOut400;
+        private Style slideUpIn10;
+        private Style slideUpIn20;
+        private Style slideUpOut10;
+        private Style slideUpOut20;
+        private Style rotate90deg;
+        private Style rotateN90deg;
 
         static Style _createAnimation(string animationName, string animationDuration, string animationTimingFunction)
         {
@@ -326,6 +366,7 @@ namespace Blazor.OfficeUiFabric.Styling
                 To = { Transform = $"translate3d(0,{toY}px,0)" }
             });
         }
+
 
 
     }

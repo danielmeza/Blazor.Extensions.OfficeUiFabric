@@ -44,10 +44,8 @@ namespace Blazor.OfficeUiFabric.Styling.Fonts
 
         public static string DefaultFontFamily => $"'Segoe UI', '{LocalizedFontNames.WestEuropean}'";
 
-        FontStyles IFontEngine.DefaultFontStyles => throw new NotImplementedException();
 
         public const string FontFamilyFallbacks = "'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', sans-serif";
-        private readonly IStyleEngine styleEngine;
         public static Lazy<Dictionary<string, string>> LanguageToFontMap = new Lazy<Dictionary<string, string>>(() => new Dictionary<string, string>()
         {
             ["ar"] = LocalizedFontFamilies.Arabic,

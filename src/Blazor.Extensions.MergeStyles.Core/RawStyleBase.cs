@@ -312,7 +312,7 @@ namespace Blazor.Extensions.MergeStyles
 
         }
 
-        public static RawStyleBase FromJson(string json) => JsonConvert.DeserializeObject<RawStyleBase>(json, Blazor.Extensions.MergeStyles.Converter.Settings);
+        public static RawStyleBase FromJson(string json) => JsonConvert.DeserializeObject<RawStyleBase>(json, Blazor.Extensions.MergeStyles.RawConverter.Settings);
 
         /// <summary>
         /// Aligns a flex container's lines within the flex container when there is extra space in

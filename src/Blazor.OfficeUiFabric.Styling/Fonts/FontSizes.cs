@@ -36,6 +36,13 @@ namespace Blazor.OfficeUiFabric.Styling.Fonts
         public string XxxLarge { get => this.xxxLarge; set => SetProperty(ref this.xxxLarge, value); }
 
         public static FontSizes DefaultFontSizes => lazyDefaultFontSizes.Value;
+
+        public string SmallPlus { get; internal set; }
+        public string MediumPlus { get; internal set; }
+        public string Icon { get; internal set; }
+        public string SuperLarge { get; internal set; }
+        public string Mini { get; internal set; }
+
         static Lazy<FontSizes> lazyDefaultFontSizes = new Lazy<FontSizes>(() => new FontSizes()
         {
             Tiny = "1rem",

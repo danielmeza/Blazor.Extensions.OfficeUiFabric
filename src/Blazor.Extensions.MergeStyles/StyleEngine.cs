@@ -180,7 +180,7 @@ namespace Blazor.Extensions.MergeStyles
                             value = strg;
                             break;
                         default:
-                            value = JsonConvert.SerializeObject(entryValue, Formatting.None, Converter.Settings);
+                            value = JsonConvert.SerializeObject(entryValue, Formatting.None, RawConverter.Settings);
                             break;
 
                     }

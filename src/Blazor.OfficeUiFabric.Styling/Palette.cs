@@ -7,8 +7,6 @@ namespace Blazor.OfficeUiFabric.Styling
     /// </summary>
     public class Palette
     {
-
-
         /// <summary>
         /// Color code for the accent.
         /// </summary>
@@ -260,7 +258,7 @@ namespace Blazor.OfficeUiFabric.Styling
 
 
 
-        public static Palette DefaultPalette = lazyDefaultPallet.Value;
+        public static Palette DefaultPalette => lazyDefaultPallet.Value;
 
         static Lazy<Palette> lazyDefaultPallet = new Lazy<Palette>(() => new Palette()
         {

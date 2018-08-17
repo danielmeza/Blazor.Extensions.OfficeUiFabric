@@ -358,7 +358,7 @@ namespace Blazor.Extensions.MergeStyles
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this, Converter.Settings);
+            return JsonConvert.SerializeObject(this, RawConverter.Settings);
         }
         public bool IsNull => this.Double == null && this.Enum == null;
     }
@@ -416,7 +416,7 @@ namespace Blazor.Extensions.MergeStyles
 
         public override string ToString()
         {
-            return JsonConvert.SerializeObject(this, Converter.Settings);
+            return JsonConvert.SerializeObject(this, RawConverter.Settings);
         }
 
     }

@@ -9,8 +9,8 @@ namespace Blazor.OfficeUiFabric.Styling
 {
     public static class SerializeExtensons
     {
-        public static string ToJson(this AnimationStyles self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
-        public static string ToJson(this AnimationVariables self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
+        public static string ToJson(this AnimationStyles self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.RawConverter.Settings);
+        public static string ToJson(this AnimationVariables self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.RawConverter.Settings);
 
     }
 }

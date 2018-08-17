@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Blazor.Extensions.MergeStyles
 {
 
-    public static class Converter
+    public static class RawConverter
     {
         public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
         {

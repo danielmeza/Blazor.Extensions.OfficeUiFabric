@@ -72,6 +72,26 @@ namespace Blazor.Extensions.MergeStyles
         {
             this.type = this.GetType();
         }
+
+
+        public override bool Equals(object obj)
+        {
+            if (!(obj is StyleSet style))
+                return false;
+            if (this.Dictionary.AreEquals(style.Dictionary) && this.SubComponentStyles?.AreEquals(style?.SubComponentStyles) == true)
+                return true;
+            return base.Equals(obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return this.Dictionary.Select(s => s.Value).Join(" ");
+        }
     }
 
 
@@ -82,29 +102,6 @@ namespace Blazor.Extensions.MergeStyles
         public static implicit operator StyleSet<T>(bool value) => new StyleSet<T>() { Bolean = value };
 
         public static explicit operator bool(StyleSet<T> value) => value.IsBool ? value.Bolean.Value : throw new InvalidCastException("The style set is not a boolean value");
-
-
-        public override bool Equals(object obj)
-        {
-            if (!(obj is StyleSet<T> style))
-                return false;
-            if (this.Dictionary.AreEquals(style.Dictionary) && this.SubComponentStyles?.AreEquals(style?.SubComponentStyles) == true)
-                return true;
-            return base.Equals(obj);
-        }
-
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }
-
-
-
-        public override string ToString()
-        {
-            return this.Dictionary.Select(s => s.Value).Join(" ");
-        }
 
 
     }

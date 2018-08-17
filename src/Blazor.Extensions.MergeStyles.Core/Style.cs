@@ -248,12 +248,12 @@ namespace Blazor.Extensions.MergeStyles
 
     public class IStyleBase
     {
-        public static object FromJson(string json) => JsonConvert.DeserializeObject<object>(json, Blazor.Extensions.MergeStyles.Converter.Settings);
+        public static object FromJson(string json) => JsonConvert.DeserializeObject<object>(json, Blazor.Extensions.MergeStyles.RawConverter.Settings);
     }
 
     public static partial class Serialize
     {
-        public static string ToJson(this Style self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.Converter.Settings);
+        public static string ToJson(this Style self) => JsonConvert.SerializeObject(self, Blazor.Extensions.MergeStyles.RawConverter.Settings);
     }
 
 
